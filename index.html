@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+<head>
+<title>silly</title>
+</head>
+<body>
+	<button id="silly">do it</button>
+	<button id="cl">undo it</button>
+	<div id="results"></div>
+	
+<script src="js/jepto.js" >
+</script>
+<script>
+$('#silly').click(function(){ 
+	$('#results').prepend(Date()+ '<br>');
+});
+$('#cl').click(function(){ 
+	$('#results').html('');
+});
+</script>
+</body>
+</html>
