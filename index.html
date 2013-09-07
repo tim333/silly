@@ -2447,6 +2447,10 @@ src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6
 <script>  // script from w3schools 'placeMarker() function places a marker where the user has clicked'
 var map;
 var myCenter=new google.maps.LatLng(51.508742,-0.120850);
+var markers = {}
+var infowindows = {}
+
+
 
 function initialize()
 {
@@ -2466,6 +2470,7 @@ var mapProp = {
 }
 
 function placeMarker(location) {  
+	
 /*
   var marker = new google.maps.Marker({
     position: location,
@@ -2481,14 +2486,20 @@ function placeMarker(location) {
 	dw = (location.lng() - a[i][2][1])*onew 
 	if (dn*dn + dw*dw <cd2) 
 	{
-		var marker=new google.maps.Marker({
+	
+		markers[i]=new google.maps.Marker({
 		position: new google.maps.LatLng(a[i][2][0],a[i][2][1]),
 		});
 
-		marker.setMap(map);
-	
-	
+		markers[i].setMap(map);
+		infowindows[0]  = new google.maps.InfoWindow({
+		content:"Hello World!"+a[i][1]
+		});
 
+		google.maps.event.addListener(markers[i], 'click', function() {
+		infowindows[0].open(map,markers[i]);
+		});
+	
 	}; 
 } 
 }
