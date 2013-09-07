@@ -7,6 +7,7 @@
 	<button id="silly">do it!</button>
 	<button id="cl">undo it</button>
 	<div id="results"></div>
+	<a id="gmap_image" href=""> </a>
 	
 <script src="js/jepto.js" >
 </script>
@@ -16,6 +17,7 @@ $('#silly').click(function(){
 });
 $('#cl').click(function(){ 
 	$('#results').html('');
+	$("#gmap_image").href('maps:q='+$xml.find( "adresse" ).text());
 });
 </script>
 </body>
