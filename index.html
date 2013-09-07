@@ -2408,8 +2408,31 @@ lat = 51.513724; lng = -0.139392 // pcs
 onen= 111.2 
 onew= 69.98  // dist in km
 
-cutdist=0.1  // 30m
+cutdist=0.5  // 30m
 cd2 = cutdist*cutdist
+
+function listbars()
+{
+
+document.write("<h2>within "+(cutdist*1000)+" meters of<br></h2>")
+document.write("<h2>lat "+lat + "  long "+lng+"<br><br></h2>")
+
+
+for (var i=0;i<a.length;i++)
+{ 
+dn = (lat - a[i][2][0])*onen 
+dw = (lng - a[i][2][1])*onew 
+if (dn*dn + dw*dw <cd2) 
+	{
+	document.write("<h4>"+a[i][1] + "</h4>")
+	document.write(ptimes(a[i][0]) + "lat lng"+ a[i][2][0]+" "+a[i][2][1]+ "<br>")
+	
+	
+
+	}; 
+} 
+
+}
 
 </script>
 
@@ -2417,34 +2440,63 @@ cd2 = cutdist*cutdist
 src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false">
 </script>
 
-<script>
+<script
+src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=false">
+</script>
+
+<script>  // script from w3schools 'placeMarker() function places a marker where the user has clicked'
+var map;
 var myCenter=new google.maps.LatLng(51.508742,-0.120850);
 
 function initialize()
 {
+
 var mapProp = {
   center:myCenter,
-  zoom:5,
+  zoom:14,
   mapTypeId:google.maps.MapTypeId.ROADMAP
   };
 
-var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+  map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
 
-var marker=new google.maps.Marker({
-  position:myCenter,
+  google.maps.event.addListener(map, 'click', function(event) {
+    placeMarker(event.latLng);
   });
 
-marker.setMap(map);
+}
+
+function placeMarker(location) {  
 /*
-var infowindow = new google.maps.InfoWindow({
-  content:"Hello World!"
+  var marker = new google.maps.Marker({
+    position: location,
+    map: map,
   });
+  var infowindow = new google.maps.InfoWindow({
+    content: 'Latitude: ' + location.lat() + '<br>Longitude: ' + location.lng()
+  });
+  infowindow.open(map,marker);  */
+  for (var i=0;i<a.length;i++)
+	{ 
+	dn = (location.lat() - a[i][2][0])*onen 
+	dw = (location.lng() - a[i][2][1])*onew 
+	if (dn*dn + dw*dw <cd2) 
+	{
+		var marker=new google.maps.Marker({
+		position: new google.maps.LatLng(a[i][2][0],a[i][2][1]),
+		});
 
-infowindow.open(map,marker); */
-}  
+		marker.setMap(map);
+	
+	
+
+	}; 
+} 
+}
 
 google.maps.event.addDomListener(window, 'load', initialize);
-</script>
+// end w3schools
+</script> 
+
 </head>
 
 <body>
@@ -2457,19 +2509,9 @@ google.maps.event.addDomListener(window, 'load', initialize);
 
 <script>
 
-document.write("<h2>within "+(cutdist*1000)+" meters of<br></h2>")
-document.write("<h2>lat "+lat + "  long "+lng+"<br><br></h2>")
+//listbars();
 
 
-for (var i=0;i<a.length;i++)
-{ 
-dn = (lat - a[i][2][0])*onen 
-dw = (lng - a[i][2][1])*onew 
-if (dn*dn + dw*dw <cd2) {
-	document.write("<h4>"+a[i][1] + "</h4>")
-	document.write(ptimes(a[i][0]) + "<br>")
-	};
-}
 </script>
 </body>
 </hmtl>
