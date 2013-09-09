@@ -16,7 +16,7 @@ function  prettyd(d) {
 	if (d==0) {return "closed"}
 	dm = d % 100
 	dh = (d - dm)/100
-	if (dh>24) {dh=hd-24}
+	if (dh>24) {dh=dh-24}
 	if (dh>12) {
 		s = mys(dh-12)  + ':' + mys(dm) + ' pm'
 		
@@ -58,30 +58,25 @@ function timeicon(t) {
 
 function listbars()
 {
+	document.write("<h2>within "+(cutdist*1000)+" meters of<br></h2>")
+	document.write("<h2>lat "+lat + "  long "+lng+"<br><br></h2>")
 
-document.write("<h2>within "+(cutdist*1000)+" meters of<br></h2>")
-document.write("<h2>lat "+lat + "  long "+lng+"<br><br></h2>")
-
-
-for (var i=0;i<a.length;i++)
-{ 
-dn = (lat - a[i][2][0])*onen 
-dw = (lng - a[i][2][1])*onew 
-if (dn*dn + dw*dw <cd2) 
-	{
-	document.write("<h4>"+a[i][1] + "</h4>")
-	document.write(ptimes(a[i][0]) + "lat lng"+ a[i][2][0]+" "+a[i][2][1]+ "<br>")
-	
-	
-
-	}; 
-} 
+	for (var i=0;i<a.length;i++)
+	{ 
+	dn = (lat - a[i][2][0])*onen 
+	dw = (lng - a[i][2][1])*onew 
+	if (dn*dn + dw*dw <cd2) 
+		{
+		document.write("<h4>"+a[i][1] + "</h4>")
+		document.write(ptimes(a[i][0]) + "lat lng"+ a[i][2][0]+" "+a[i][2][1]+ "<br>")
+		}; 
+	} 
 
 }
 
 </script>
 
-<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDY0kkJiTPVd2U7aTOAwhc9ySH6oHxOIYM&sensor=true">
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBb8HDIM893Gt2imnvPCcQfilmBtEL2hOs&sensor=true">
 </script>
 
 
@@ -93,7 +88,7 @@ days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
 t= new Date()
 day = t.getDay()
 time = t.getHours()*100 + t.getMinutes()
-day = 6 ; //time = 2590
+//day = 6 ; time = 2590
 
 document.write("<h3>Late Bars on "+days[day]+" at " + prettyd(time)+' ' +"</h3>");
 </script>
