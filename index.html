@@ -2,11 +2,13 @@
 <html>
 <head>
 
-
 <script type="text/javascript" src="data.js"></script>
+
 <script>
 function mys(n) {
-	if (n==0) { return "00"} else {return n.toString()}
+	if (n==0) { return "00"} 
+	if (n<10)  {return "0"+n.toString()}
+	return n.toString()
 	}
 	
 function  prettyd(d) {
@@ -14,15 +16,15 @@ function  prettyd(d) {
 	if (d==0) {return "closed"}
 	dm = d % 100
 	dh = (d - dm)/100
-	
-	if (dh<24) {
+	if (dh>24) {dh=hd-24}
+	if (dh>12) {
 		s = mys(dh-12)  + ':' + mys(dm) + ' pm'
 		
 		} else {
-		s = mys(dh-24) + ':' + mys(dm) + ' am'
+		s = mys(dh) + ':' + mys(dm) + ' am'
 		}
 		return s 
-	if (dh<5000) { alert (dh)}
+	
 
 } 
 function ptimes(lst) {
@@ -93,7 +95,7 @@ day = t.getDay()
 time = t.getHours()*100 + t.getMinutes()
 day = 6 ; //time = 2590
 
-document.write("<h3>Late Bars on "+days[day]+" at "+  prettyd(time)+' ' +"</h3>");
+document.write("<h3>Late Bars on "+days[day]+" at " + prettyd(time)+' ' +"</h3>");
 </script>
 
 
