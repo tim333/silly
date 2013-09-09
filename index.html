@@ -74,43 +74,27 @@ function listbars()
 
 }
 
-</script>
+function drawmap(){
+$('#results').html("<h3>Late Bars on "+days[day]+" at " + prettyd(time)+' ' +"</h3>");
 
-<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBb8HDIM893Gt2imnvPCcQfilmBtEL2hOs&sensor=true">
-</script>
-
-
-
-<body>
-<script>
-days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
-
-t= new Date()
-day = t.getDay()
-time = t.getHours()*100 + t.getMinutes()
-//day = 6 ; time = 2590
-
-document.write("<h3>Late Bars on "+days[day]+" at " + prettyd(time)+' ' +"</h3>");
-</script>
-
-
-<div id="map" style="width: 500px; height: 400px;"></div>
-
-  <script type="text/javascript">
-   
-
+//  *********** pasted from w3 to get lat lng
   if (navigator.geolocation)
     {
     navigator.geolocation.getCurrentPosition(showPosition);
     }
-  
-function showPosition(position)
+	else
+	{
+	lat = 51.513724; lng = -0.139392 }
+	
+  function showPosition(position)
   {
   lat = position.coords.latitude  
   lng = position.coords.longitude;	
   }
+ //  ************
+ 
     var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 10,
+      zoom: 11,
       center: new google.maps.LatLng(lat, lng),
       mapTypeId: google.maps.MapTypeId.ROADMAP
     });
@@ -140,6 +124,65 @@ function showPosition(position)
       })(marker, i));
     }}
 	
+
+}
+
+</script>
+
+<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBb8HDIM893Gt2imnvPCcQfilmBtEL2hOs&sensor=true">
+</script>
+
+
+
+<body>
+<script>
+days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
+
+
+//day = 6 ; time = 2590
+
+// below from silly
+
+function allnow(){
+	t= new Date()
+	day = t.getDay()
+	time = t.getHours()*100 + t.getMinutes()
+	if (t.getHours()<8) {time = time + 2400}  // if it's after 8am show the times for the next night rather than previous
+	drawmap();}
+	
+</script>
+
+<div id="map" style="width: 500px; height: 400px;"></div>
+<button id="silly">Now</button>
+<button id="tue">(Tue9)</button>
+<button id="cl">(Sat1)</button>
+<div id="results"></div>
+
+<script src="js/jepto.js" >
+</script>
+<script>
+allnow();	
+$('#silly').click(function(){ 
+	allnow();
+});
+$('#cl').click(function(){ 
+	day = 6
+	time = 2500
+	drawmap();
+});	
+$('#tue').click(function(){ 
+	day = 6
+	time = 2100
+	drawmap();
+});
+</script>
+
+  <script type="text/javascript">
+   
+
+ 
+ 
+
 	//listbars()
   </script>
 </body>
