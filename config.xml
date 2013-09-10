@@ -18,6 +18,6 @@
     
     <preference name="stay-in-webview"            value="false" />          <!-- ios: external links should open in the default browser, 'true' would use the webview the app lives in -->
     
-
+<access origin="*" /> 
 
 </widget>
