@@ -21,6 +21,8 @@
 
 <script>
 
+
+
 function mys(n) {
 	if (n==0) { return "00"} 
 	if (n<10)  {return "0"+n.toString()}
@@ -113,6 +115,7 @@ function drawthemarkers() {
       })(marker, i));
 	  if ((time > a[i][0][day]) || (a[i][0][day]==0)) {markers[i].setMap(null)}
     }}
+
 	
 function hideclosedbars() {
 	for (i = 0; i < a.length; i++) 
@@ -160,6 +163,7 @@ $('#results').html("<h3>Late Bars on "+days[day]+" at " + prettyd(time)+' ' +"</
 
 
 <body>
+
 <script>
 days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
 
@@ -180,8 +184,11 @@ function allnow(){
 
 <!-- Home from slider thing-->
 
+
+
 <div data-role="page" id="page1">
     <div data-role="content">
+	hey <a href='#' class='link' rel='http://www.google.com'>Go Somewhere</a>
         <div id="map" style="width:500px;height:400px;"></div>
         <div data-role="fieldcontain">
             <label for="slider1">
@@ -215,9 +222,21 @@ $( "#slider2").on('slidestop',function( event ) {
 	day = $("#slider2").val()
 	if (day>6) {day=0}
 	drawthemarkers()
+
+	
 });
 
+// redirect
+$('.link').on('tap', function() {
+    url = $(this).attr("rel");  
+    loadURL(url);
+});
 
+function loadURL(url){
+	alert(url);
+    navigator.app.loadUrl(url, { openExternal:true });
+    return false;
+} 
 
 $('#cl').click(function(){ 
 	day = $("#slider2").val()
