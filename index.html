@@ -1,17 +1,32 @@
 
 <html>
-<head>
-
+<head>  <!-- from jquery gen -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <title></title>
+  
+  <!-- external
+  <link rel="stylesheet" href="https://d10ajoocuyu32n.cloudfront.net/mobile/1.3.1/jquery.mobile-1.3.1.min.css">
+  <script src="https://d10ajoocuyu32n.cloudfront.net/jquery-1.9.1.min.js"></script>     
+  <script src="https://d10ajoocuyu32n.cloudfront.net/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>   -->
+  
+  <!-- internal replacements -->
+  <link rel="stylesheet" href="js/jquery.mobile-1.3.2.css">
+  <script src="js/jquery-1.9.1.min.js"></script> 
+  <script src="js/jquery.mobile-1.3.2.min.js"></script>  
+  
 <script type="text/javascript" src="data.js"></script>
 
 <script>
+
 function mys(n) {
 	if (n==0) { return "00"} 
 	if (n<10)  {return "0"+n.toString()}
 	return n.toString()
 	}
-	
-function  prettyd(d) {
+	function  prettyd(d) {
 
 	if (d==0) {return "closed"}
 	dm = d % 100
@@ -24,7 +39,6 @@ function  prettyd(d) {
 		s = mys(dh) + ':' + mys(dm) + ' am'
 		}
 		return s 
-	
 
 } 
 function ptimes(lst) {
@@ -33,7 +47,8 @@ function ptimes(lst) {
 	{ s = s+ prettyd(lst[i])+"  " }
 	return s}
 
-
+var markers = new Array();
+var map
 lat = 51.513724; lng = -0.139392 // pcs
 onen= 111.2 
 onew= 69.98  // dist in km
@@ -56,7 +71,7 @@ function timeicon(t) {
 	return  icon
 	}
 
-function listbars()
+function listbars()  // lists them as text
 {
 	document.write("<h2>within "+(cutdist*1000)+" meters of<br></h2>")
 	document.write("<h2>lat "+lat + "  long "+lng+"<br><br></h2>")
@@ -73,7 +88,40 @@ function listbars()
 	} 
 
 }
+function drawthemarkers() {
+    var infowindow = new google.maps.InfoWindow();
+	var marker, i;
 
+    for (i = 0; i < a.length; i++) {
+	
+		p=a[i][2][0]; q=a[i][2][1] 
+		
+		marker = new google.maps.Marker({
+        position: new google.maps.LatLng(p,q),
+		icon: timeicon(a[i][0][day]),
+        map: map
+      });
+		markers[i]=marker
+      google.maps.event.addListener(marker, 'click', (function(marker, i) {
+        return function() {
+			var s= a[i][1][0] +'<br>'
+			for (var j=0;j<7;j++)
+				{ s = s+ days[j]+' :  '+ prettyd(a[i][0][j])+"<br>  " }
+          infowindow.setContent(s);
+          infowindow.open(map, marker);
+        }
+      })(marker, i));
+	  if ((time > a[i][0][day]) || (a[i][0][day]==0)) {markers[i].setMap(null)}
+    }}
+	
+function hideclosedbars() {
+	for (i = 0; i < a.length; i++) 
+	{
+	  if ((time > a[i][0][day]) || (a[i][0][day]==0)) 
+			{markers[i].setMap(null)}
+	  else 	{markers[i].setMap(map)}
+	}}
+	
 function drawmap(){
 $('#results').html("<h3>Late Bars on "+days[day]+" at " + prettyd(time)+' ' +"</h3>");
 
@@ -93,36 +141,13 @@ $('#results').html("<h3>Late Bars on "+days[day]+" at " + prettyd(time)+' ' +"</
   }
  //  ************
  
-    var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 13,
+    map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 16,
       center: new google.maps.LatLng(lat, lng),
       mapTypeId: google.maps.MapTypeId.ROADMAP
     });
-
-    var infowindow = new google.maps.InfoWindow();
-
-    var marker, i;
-
-    for (i = 0; i < a.length; i++) {
-	if (a[i][0][6]>time){
-		p=a[i][2][0]; q=a[i][2][1] 
-		
-		marker = new google.maps.Marker({
-        position: new google.maps.LatLng(p,q),
-		icon: timeicon(a[i][0][day]),
-        map: map
-      });
-
-      google.maps.event.addListener(marker, 'click', (function(marker, i) {
-        return function() {
-			var s= a[i][1][0] +'<br>'
-			for (var j=0;j<7;j++)
-				{ s = s+ days[j]+' :  '+ prettyd(a[i][0][j])+"<br>  " }
-          infowindow.setContent(s);
-          infowindow.open(map, marker);
-        }
-      })(marker, i));
-    }}
+	
+	drawthemarkers();
 	
 
 }
@@ -152,38 +177,70 @@ function allnow(){
 	
 </script>
 
-<div id="map" style="width: 500px; height: 400px;"></div>
-<button id="silly">Now</button>
-<button id="tue">(Tue9)</button>
-<button id="cl">(Sat1)</button>
-<div id="results"></div>
 
-<script src="js/jepto.js" >
-</script>
+<!-- Home from slider thing-->
+
+<div data-role="page" id="page1">
+    <div data-role="content">
+        <div id="map" style="width:500px;height:400px;"></div>
+        <div data-role="fieldcontain">
+            <label for="slider1">
+                time
+            </label>
+            <input id="slider1" type="range" name="slider" value="12" min="0" max="24"
+            data-highlight="true" data-mini="true">
+        </div>
+        <div data-role="fieldcontain">
+            <label for="slider2">
+                day
+            </label>
+            <input id="slider2" type="range" name="slider" value="5" min="1" max="7"
+            data-highlight="true" data-mini="true">
+        </div>
+        <input id="cl" type="submit" value="Submit">
+    </div>
+</div>
+
 <script>
-allnow();	
-$('#silly').click(function(){ 
-	allnow();
+function initialize()
+{
+
+$( "#slider1").on('slidestop',function( event ) {
+   time = $("#slider1").val()*100
+	if (time<900) {time=time+2400}
+	hideclosedbars()
 });
+
+$( "#slider2").on('slidestop',function( event ) {
+	day = $("#slider2").val()
+	if (day>6) {day=0}
+	drawthemarkers()
+});
+
+
+
 $('#cl').click(function(){ 
-	day = 6
-	time = 2500
-	drawmap();
-});	
-$('#tue').click(function(){ 
-	day = 6
-	time = 2100
-	drawmap();
-});
+	day = $("#slider2").val()
+	if (day>6) {day=0}
+	time = $("#slider1").val()*100
+	if (time<900) {time=time+2400} 
+	drawmap(); })
+	
+day = $("#slider2").val()
+if (day>6) {day=0}
+time = $("#slider1").val()*100
+if (time<900) {time=time+2400} 
+drawmap()
+	
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+  // former buttons;
+
+
+
+
 </script>
 
-  <script type="text/javascript">
-   
-
- 
- 
-
-	//listbars()
-  </script>
 </body>
 </hmtl>
