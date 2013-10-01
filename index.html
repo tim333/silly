@@ -86,7 +86,7 @@ function timeicon(t) {
 	return  icon
 	}
 
-function listbars()  // lists them as text
+/* function listbars()  // lists them as text
 {
 	document.write("<h2>within "+(cutdist*1000)+" meters of<br></h2>")
 	document.write("<h2>lat "+lat + "  long "+lng+"<br><br></h2>")
@@ -102,7 +102,8 @@ function listbars()  // lists them as text
 		}; 
 	} 
 
-}
+} */
+
 function drawthemarkers() {
     var infowindow = new google.maps.InfoWindow();
 	var marker, i;
@@ -142,6 +143,7 @@ function drawthemarkers() {
 function hideclosedbars() {
 	for (i = 0; i < a.length; i++) 
 	{ if (markers[i]) {
+		markers[i].icon = timeicon(a[i][0][day]);
 	  if ((time > a[i][0][day]) || (a[i][0][day]==0)) 
 			{markers[i].setMap(null)}
 	  else 	{markers[i].setMap(map)}
@@ -252,7 +254,7 @@ $( "#slider1").on('slidestop',function( event ) {
 $( "#slider2").on('slidestop',function( event ) {
 	day = $("#slider2").val()
 	if (day>6) {day=0}
-	drawthemarkers()
+	hideclosedbars()
 
 	
 });
@@ -276,7 +278,7 @@ function loadURL(url){
 } 
 
 
-	
+// initial map draw	
 day = $("#slider2").val()
 if (day>6) {day=0}
 time = $("#slider1").val()*100
