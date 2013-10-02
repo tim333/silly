@@ -182,7 +182,7 @@ function allnow(){
 function initialize()
 {
 
-$( "#slider1").on('slidestop',function( event ) {
+$( "#slider1").on('change',function( event ) {
 	if (busy==1) {alert('busy')}
 	else
 	{
@@ -194,7 +194,9 @@ $( "#slider1").on('slidestop',function( event ) {
 	}
 });
 
-$( "#slider2").on('slidestop',function( event ) {
+// slidestop  / change / start stop
+
+$( "#slider2").on('change',function( event ) {
 	day = $("#slider2").val()
 	if (day>6) {day=0}
 	hideclosedbars()
@@ -250,7 +252,7 @@ drawmap()
                 time
             </label>
             <input id="slider1" type="range" name="slider" value="12" min="0" max="24"
-            data-highlight="true" data-mini="true">
+            data-highlight="true" data-mini="true" step="0.1">
         </div>
         <div data-role="fieldcontain">
             <label for="slider2">
