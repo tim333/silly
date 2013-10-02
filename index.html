@@ -136,7 +136,7 @@ function drawthemarkers() {
 			//else {markers[i]=false}
 		 
     }} 
-	alert(JSON.stringify(visbars));
+	//alert(JSON.stringify(visbars));
 	}
 
 	
@@ -217,12 +217,13 @@ $( "#slider2").on('change',function( event ) {
 	
 });
 
-$('#cl').click(function(){ 
-	day = $("#slider2").val()
-	if (day>6) {day=0}
-	time = $("#slider1").val()*100
-	if (time<900) {time=time+2400} 
-	drawmap(); })
+$('#now').click(function(){ 
+	var e = new Date(); 
+	time = e.getHours()*100 + e.getMinutes()
+	day = e.getDay()
+	document.getElementById("time").innerHTML= prettyd(time);
+	document.getElementById("day").innerHTML= days[day];
+	})
  
 
 // initial map draw	
@@ -281,7 +282,9 @@ function showMarkers() {
             <input id="slider2" type="range" name="slider" value="5" min="1" max="7" class="ui-hidden-accessible"
             data-highlight="true" data-mini="true">
         </div>
-        <input id="cl" type="submit" value="Submit">
+        <!--<input id="cl" type="submit" value="Here"><input id="b2" type="submit" value="Now">-->
+		<a href="#" id="here" data-role="button" data-inline="true">Here</a>
+		<a href="#" id="now" data-role="button" data-inline="true" >Now</a>
     </div>
 </div>
 
