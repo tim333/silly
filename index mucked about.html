@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="https://d10ajoocuyu32n.cloudfront.net/mobile/1.3.1/jquery.mobile-1.3.1.min.css">
   <script src="https://d10ajoocuyu32n.cloudfront.net/jquery-1.9.1.min.js"></script>     
   <script src="https://d10ajoocuyu32n.cloudfront.net/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>   -->
+  <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBb8HDIM893Gt2imnvPCcQfilmBtEL2hOs&sensor=true"> </script> 
   
   <!-- internal replacements -->
   <link rel="stylesheet" href="js/jquery.mobile-1.3.2.css">
@@ -21,9 +22,14 @@
   <script type="text/javascript" src="data.js"></script>
 
 
-<script>
+<script> // define the various functions
 
-
+function allnow(){
+	t= new Date()
+	day = t.getDay()
+	time = t.getHours()*100 + t.getMinutes()
+	if (t.getHours()<8) {time = time + 2400}  // if it's after 8am show the times for the next night rather than previous
+	drawmap();}
 
 function mys(n) {
 	if (n==0) { return "00"} 
@@ -51,20 +57,9 @@ function ptimes(lst) {
 	{ s = s+ prettyd(lst[i])+"  " }
 	return s}
 
-var markers = new Array();
-var map
-lat = 51.513724; lng = -0.139392 // pcs
-onen= 111.2 
-onew= 69.98  // dist in km
 
-cutdist=0.05  // 30m
-cd2 = cutdist*cutdist
-  
-  isset = new Array();
-  isset[1]=1;
- 
 
- function distfrompret2(x,y) {
+function distfrompret2(x,y) {
 	var a,b
 	a = 51.51-y
 	b = x - 0.139
@@ -155,71 +150,80 @@ function hideclosedbars() {
 	  }
 	}}
 	
-function drawmap(){
-$('#results').html("<h3>Late Bars on "+days[day]+" at " + prettyd(time)+' ' +"</h3>");
-
-//  *********** pasted from w3 to get lat lng
-  if (navigator.geolocation)
+function getlocation(){
+  /*if (navigator.geolocation)
     {
     navigator.geolocation.getCurrentPosition(showPosition);
     }
 	else
 	{
-	lat = 51.513724; lng = -0.139392 }
-	
-  function showPosition(position)
+	lat = 51.513724; lng = -0.139392 } */
+}	
+function showPosition(position)
   {
   lat = position.coords.latitude  
   lng = position.coords.longitude;	
-  }
- //  ************
- 
-    map = new google.maps.Map(document.getElementById('map'), {
+  }	
+	
+function drawmap(){
+	// getlocation();
+	  map = new google.maps.Map(document.getElementById('map'), {
       zoom: 16,
-      center: new google.maps.LatLng(lat, lng),
+      center: google.maps.LatLng(lat, lng),
       mapTypeId: google.maps.MapTypeId.ROADMAP
     });
-	
-	drawthemarkers();
-	
+
+	drawthemarkers();	
 
 }
 
-</script>
+function initialize() {
 
-<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBb8HDIM893Gt2imnvPCcQfilmBtEL2hOs&sensor=true">
-</script>
+	$( "#slider1").on('slidestop',function( event ) {
+		if (busy==1) {alert('busy')}
+		else
+		{
+			busy=1;
+			time = $("#slider1").val()*100
+			if (time<900) {time=time+2400}
+			hideclosedbars();
+			busy=0;
+		}
+	});
+
+	$( "#slider2").on('slidestop',function( event ) {
+		day = $("#slider2").val()
+		if (day>6) {day=0}
+		hideclosedbars()
+
+		
+	});
+
+	$('#cl').click(function(){ 
+		day = $("#slider2").val()
+		if (day>6) {day=0}
+		time = $("#slider1").val()*100
+		if (time<900) {time=time+2400} 
+		drawmap(); })
 
 
+	// initial map draw	
+	day = $("#slider2").val()
+	if (day>6) {day=0}
+	time = $("#slider1").val()*100
+	if (time<900) {time=time+2400} 
+	drawmap()
+}
+//                              end of function definitions and on to yr actual html
+
+</script>  
 
 <body>
-
-<script>
-days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
-busy = 0
-
-
-//day = 6 ; time = 2590
-
-// below from silly
-
-function allnow(){
-	t= new Date()
-	day = t.getDay()
-	time = t.getHours()*100 + t.getMinutes()
-	if (t.getHours()<8) {time = time + 2400}  // if it's after 8am show the times for the next night rather than previous
-	drawmap();}
-	
-</script>
-
-
-<!-- Home from slider thing-->
-
 
 
 <div data-role="page" id="page1">
     <div data-role="content">
-	
+	 
         <div id="map" style="width:500px;height:400px;"></div>
         <div data-role="fieldcontain">
             <label for="slider1">
@@ -241,63 +245,23 @@ function allnow(){
 
 <script>
 
-function initialize()
-{
+// global variables 
+days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
+busy = 0
+var markers = new Array();
+var map
+lat = 51.513724; lng = -0.139392 // pcs
+onen= 111.2 
+onew= 69.98  // dist in km
+cutdist=0.05  // 30m
+cd2 = cutdist*cutdist
+  
+isset = new Array();
+isset[1]=1;
 
-$( "#slider1").on('slidestop',function( event ) {
-	if (busy==1) {alert('busy')}
-	else
-	{
-		busy=1;
-		time = $("#slider1").val()*100
-		if (time<900) {time=time+2400}
-		hideclosedbars();
-		busy=0;
-	}
-});
-
-$( "#slider2").on('slidestop',function( event ) {
-	day = $("#slider2").val()
-	if (day>6) {day=0}
-	hideclosedbars()
-
-	
-});
-
-$('#cl').click(function(){ 
-	day = $("#slider2").val()
-	if (day>6) {day=0}
-	time = $("#slider1").val()*100
-	if (time<900) {time=time+2400} 
-	drawmap(); })
-
-/* redirect
-$('.link').on('tap', function() {
-    url = $(this).attr("rel");  
-    loadURL(url);
-});
-
-function loadURL(url){
-	alert(url);
-	window.open("http://www.google.com", "_system");
-    return false;
-} */
-
-
-// initial map draw	
-day = $("#slider2").val()
-if (day>6) {day=0}
-time = $("#slider1").val()*100
-if (time<900) {time=time+2400} 
-drawmap()
-	
-}
-
+// initialize
 google.maps.event.addDomListener(window, 'load', initialize);
-  // former buttons;
-
-
-
+   
 
 </script>
 
