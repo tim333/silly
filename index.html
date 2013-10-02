@@ -95,13 +95,19 @@ function timeicon(t) {
 function drawthemarkers() {
     var infowindow = new google.maps.InfoWindow();
 	var marker, i;
-
+	var b = map.getBounds()
+	visbars = []
+	// alert(JSON.stringify(b))
+	// alert(b.fa.d);
     for (i = 0; i < a.length; i++) {
 	
 		p=a[i][2][0]; q=a[i][2][1] 
-		
-		if ((((p>51.5) && (p<51.53)) && (q<(-0.1) && (q>(-0.15)))) && (!isset[i]) ){
-		
+		//if ((((p>51.5) && (p<51.53)) && (q<(-0.1) && (q>(-0.15)))) && (!isset[i]) ) {
+		//if ((((p>b.fa.d) && (p<b.fa.b)) && (q<(b.ka.d) && (q>(b.ka.b)))) && (!isset[i]) ){
+		//alert(b.fa.d);
+		if ((((p>b.fa.b) && (p<b.fa.d)) && (q<(b.ka.d) && (q>(b.ka.b))))  ) {
+			visbars.push(i);
+			if (!isset[i]) {
 			isset[i]=true;
 			marker = new google.maps.Marker({
 			position: new google.maps.LatLng(p,q),
@@ -130,18 +136,23 @@ function drawthemarkers() {
 			  }
 			  else {markers[i]=false}
 		 
-    }}
+    }} 
+	// alert(JSON.stringify(visbars));
+	}
 
 	
 function hideclosedbars() {
-	for (i = 0; i < a.length; i++) 
-	{ if (markers[i]) {
+	for (j = 0; j < visbars.length; j++) 
+	{ 
+		i = visbars[j]
+		if (markers[i]) {
 		markers[i].icon = timeicon(a[i][0][day]);
 	  if ((time > a[i][0][day]) || (a[i][0][day]==0)) 
 			{markers[i].setMap(null)}
 	  else 	{markers[i].setMap(map)}
 	  }
 	}}
+
 	
 function drawmap(){
 
@@ -168,7 +179,7 @@ function drawmap(){
       mapTypeId: google.maps.MapTypeId.ROADMAP
     });
 	
-	drawthemarkers();
+	//drawthemarkers();
 }
 
 
@@ -212,16 +223,23 @@ $('#cl').click(function(){
 	drawmap(); })
  
 
-
 // initial map draw	
 day = $("#slider2").val()
 if (day>6) {day=0}
 time = $("#slider1").val()*100
 if (time<900) {time=time+2400} 
 drawmap()
+google.maps.event.addListener(map, 'idle', drawthemarkers);
 	
 }	
+//  https://developers.google.com/maps/articles/toomanymarkers
 	
+function showMarkers() {
+    var bounds = map.getBounds();
+	//alert(bounds.fa.d);
+
+  }	
+  
 </script>
 
 
@@ -252,7 +270,7 @@ drawmap()
                 time
             </label>
             <input id="slider1" type="range" name="slider" value="12" min="0" max="24"
-            data-highlight="true" data-mini="true" step="0.1">
+            data-highlight="true" data-mini="true" >
         </div>
         <div data-role="fieldcontain">
             <label for="slider2">
@@ -271,6 +289,7 @@ days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
 busy = 0
 
 var markers = new Array();
+var visbars = new Array();
 var map
 lat = 51.513724; lng = -0.139392 // pcs
 onen= 111.2 
@@ -283,6 +302,7 @@ isset = new Array();
 isset[1]=1;
 
 google.maps.event.addDomListener(window, 'load', initialize);
+
 
 
 </script>
