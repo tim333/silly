@@ -131,15 +131,16 @@ function addbar(i) {
 
 function adjustbars(){
 	var c=0
+	var d=0
 	for (j=0; j<visbars.length; j++) {
 		i = visbars[j][0]
 		// if ((time > a[i][0][day]) || (a[i][0][day]==0)) {markers[i].setMap(null)}
-		
+		if (!(time > a[i][0][day]) || (a[i][0][day]==0)) d+=1
 		if ((time > a[i][0][day]) || (a[i][0][day]==0) || c>maxbars ) 
 				{if (showing[i]) removebar(i);} 
 		else{ if (!showing[i]) { addbar(i)}; c +=1 }
 	}	
-	if (c>maxbars) document.getElementById("time").innerHTML="Many bars. Showing latest "+maxbars ;
+	if (c>maxbars) document.getElementById("time").innerHTML=ts+" (showing "+maxbars+' of '+d+')' ;
 	else document.getElementById("time").innerHTML= prettyd(time);
 	
 }
@@ -236,14 +237,14 @@ function updatetime(){
 	var e = new Date(); var s=''
 	time = e.getHours()*100 + e.getMinutes()	
 	if (time<1200) {time=time+2400}
-	var t=prettyd(time)
+	ts=prettyd(time)
 	day = e.getDay()
 	if( e.getHours()<8) {day=day-1;s=" night"}
 	if( e.getHours()>21) s=" night";
 	if (day<0) day = 6;
 	$("#slider1").val((time-2400)/100).slider ("refresh")
 	$("#slider2").val(day).slider ("refresh")
-	document.getElementById("time").innerHTML= t;
+	document.getElementById("time").innerHTML= ts;
 	document.getElementById("day").innerHTML= days[day]+s;
 
 }
@@ -254,16 +255,19 @@ function initialize()
 
 $( "#slider1").on('change',function( event ) {
 	if (busy==1) {alert('busy')}
+	else {
+	if (init) init=0
 	else
 	{
 		busy=1;
 		var t = $("#slider1").val()
 		var h = Math.floor(t) ; var m = t-h ; time=h*100+m*60
 		if (time<900) {time=time+2400}
-		document.getElementById("time").innerHTML= prettyd(time);
+		ts=prettyd(time)
+		document.getElementById("time").innerHTML=ts;
 		adjustbars();
 		busy=0;
-	}
+	}}
 });
 
 // slidestop  / change / start stop
@@ -289,10 +293,11 @@ $('#now').click(function(){
 	
 
 //  map draw in initialize  
-updatetime()
 drawmap2();
+
 infowindow = new google.maps.InfoWindow();
 google.maps.event.addListener(map, 'idle', getbarsinview);
+updatetime()
 }	  
 
 // end of initialize 
@@ -338,7 +343,7 @@ handles = []  // list of the listener functions so you can remover them
 mtimes = [] //  the times shown on the map markers
 
 showing = []  // for each bar whether it's showing or not
-var map
+var map, ts
 var infowindow
 
 maxbars = 200
@@ -347,6 +352,7 @@ onen= 111.2
 onew= 69.98  // dist in km
 days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
 busy = 0
+init=1
 
 google.maps.event.addDomListener(window, 'load', initialize);
 
