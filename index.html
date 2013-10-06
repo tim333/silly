@@ -7,15 +7,16 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black"> 
   <title></title>
   
-  <!-- external 
-  <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBb8HDIM893Gt2imnvPCcQfilmBtEL2hOs&sensor=true"></script> -->
+  <!-- external -->
+  <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBb8HDIM893Gt2imnvPCcQfilmBtEL2hOs&sensor=true"></script> 
+  
   <!-- internal replacements -->
   <link rel="stylesheet" href="js/jquery.mobile-1.3.2.css">
   <script src="js/jquery-1.9.1.min.js"></script> 
   <script src="js/jquery.mobile-1.3.2.min.js"></script>   
   <script src="phonegap.js"></script> 
   <script type="text/javascript" src="data.js"></script>
-  <script src="js/googleapi.js"></script>
+  <script src="js/googleblob.js"></script> -->
 
 
 <script>   // function definitions
@@ -200,21 +201,33 @@ var MY_MAPTYPE_ID = 'custom_style';
       zoom: 16,
       center: new google.maps.LatLng(lat, lng),
       mapTypeId: google.maps.MapTypeId.ROADMAP,
-  
-  
+
     mapTypeControlOptions: {
       mapTypeIds: [google.maps.MapTypeId.ROADMAP, MY_MAPTYPE_ID]
     },
-    mapTypeId: MY_MAPTYPE_ID})
-
-
-  var styledMapOptions = {
-    name: 'Custom Style'
-  };
+    mapTypeId: MY_MAPTYPE_ID});
+	
+GeoMarker = new GeolocationMarker(map);  /// the blue blob + more code below
+GeoMarker.setCircleOptions({fillColor: '#808080'});
+ google.maps.event.addListenerOnce(GeoMarker, 'position_changed', function() {
+          map.setCenter(this.getPosition());
+          // map.fitBounds(this.getBounds());
+        });
+google.maps.event.addListener(GeoMarker, 'geolocation_error', function(e) {
+  alert('There was an error obtaining your position. Message: ' + e.message);
+        });
+GeoMarker.setMap(map);
+	//tube  */
+	
+var styledMapOptions = {
+  name: 'Custom Style'
+};
 
   var customMapType = new google.maps.StyledMapType(featureOpts, styledMapOptions);
 
   map.mapTypes.set(MY_MAPTYPE_ID, customMapType);
+  
+// GeoMarker = new GeolocationMarker(map);  /// the blue blob
 }
 
 	
@@ -227,7 +240,20 @@ getgeo();
       center: new google.maps.LatLng(lat, lng),
       mapTypeId: google.maps.MapTypeId.ROADMAP
     });	
+	GeoMarker = new GeolocationMarker(map);  /// the blue blob + more code below
 	
+	GeoMarker.setCircleOptions({fillColor: '#808080'});
+
+        google.maps.event.addListenerOnce(GeoMarker, 'position_changed', function() {
+          map.setCenter(this.getPosition());
+          
+        });
+
+        google.maps.event.addListener(GeoMarker, 'geolocation_error', function(e) {
+          alert('There was an error obtaining your position. Message: ' + e.message);
+        });
+
+        GeoMarker.setMap(map);
 	//tube
 	//var transitLayer = new google.maps.TransitLayer();
 	//transitLayer.setMap(map);
@@ -282,7 +308,9 @@ $( "#slider2").on('change',function( event ) {
 });
 
 $('#now').click(function(){ 
+	init=1
 	updatetime()
+	
 	})
 	
  $('#here').click(function(){ 
@@ -294,7 +322,6 @@ $('#now').click(function(){
 
 //  map draw in initialize  
 drawmap2();
-
 infowindow = new google.maps.InfoWindow();
 google.maps.event.addListener(map, 'idle', getbarsinview);
 updatetime()
@@ -308,8 +335,7 @@ updatetime()
 
 <!-- Home from slider thing-->
 
-<div data-role="page" id="page1">
-    <div data-role="content">
+
 	
         <div id="map" style="width:500px;height:400px;"></div>
         <div data-role="fieldcontain">
@@ -329,8 +355,7 @@ updatetime()
         <!--<input id="cl" type="submit" value="Here"><input id="b2" type="submit" value="Now">-->
 		<a href="#" id="here" data-role="button" data-inline="true">Here</a>
 		<a href="#" id="now" data-role="button" data-inline="true" >Now</a>
-    </div>
-</div>
+
 
 <script>   // globals + initialize call
 
@@ -352,7 +377,7 @@ onen= 111.2
 onew= 69.98  // dist in km
 days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
 busy = 0
-init=1
+init=1  // to stop the silly bar change detector problem
 
 google.maps.event.addDomListener(window, 'load', initialize);
 
