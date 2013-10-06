@@ -261,11 +261,16 @@ function updatetime(){
 	if (time<1200) {time=time+2400}
 	ts=prettyd(time)
 	day = e.getDay()
+	
 	if( e.getHours()<8) {day=day-1;s=" night"}
 	if( e.getHours()>21) s=" night";
 	if (day<0) day = 6;
+	slideday = day
+	if (day==0) slideday=7  
+	
 	$("#slider1").val((time-2400)/100).slider ("refresh")
-	$("#slider2").val(day).slider ("refresh")
+	$("#slider2").val(slideday).slider ("refresh")
+	
 	document.getElementById("time").innerHTML= ts;
 	document.getElementById("day").innerHTML= days[day]+s;
 
@@ -295,7 +300,8 @@ $( "#slider1").on('change',function( event ) {
 // slidestop  / change / start stop
 
 $( "#slider2").on('change',function( event ) {
-	day = $("#slider2").val()
+	day = $("#slider2").val()  // tried to make the day correct 6 oct
+	
 	if (day>6) {day=0}
 	document.getElementById("day").innerHTML= days[day]+" night";
 	adjustbars()
