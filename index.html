@@ -16,7 +16,7 @@
   <script src="js/jquery.mobile-1.3.2.min.js"></script>   
   <script src="phonegap.js"></script> 
   <script type="text/javascript" src="data.js"></script>
-  <script src="js/googleblob.js"></script> -->
+  <script src="js/googleblob.js"></script>
 
 
 <script>   // function definitions
@@ -175,9 +175,7 @@ function getgeo(){
 function drawmap2(){
 var MY_MAPTYPE_ID = 'custom_style';
 
-
-
-  var featureOpts = [
+var featureOpts = [
     {
     featureType: "all",
     stylers: [
@@ -208,14 +206,12 @@ var MY_MAPTYPE_ID = 'custom_style';
     mapTypeId: MY_MAPTYPE_ID});
 	
 GeoMarker = new GeolocationMarker(map);  /// the blue blob + more code below
-GeoMarker.setCircleOptions({fillColor: '#808080'});
+//GeoMarker.setCircleOptions({fillColor: '#808080'});
  google.maps.event.addListenerOnce(GeoMarker, 'position_changed', function() {
           map.setCenter(this.getPosition());
           // map.fitBounds(this.getBounds());
         });
-google.maps.event.addListener(GeoMarker, 'geolocation_error', function(e) {
-  alert('There was an error obtaining your position. Message: ' + e.message);
-        });
+
 GeoMarker.setMap(map);
 	//tube  */
 	
@@ -333,7 +329,7 @@ updatetime()
 
 <body>
 
-<!-- Home from slider thing-->
+<!--Home from slider thing-->
 
 
 	
