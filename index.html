@@ -353,9 +353,8 @@ window.addEventListener("orientationchange", function() {
   //alert("lat is "+lat);
 }, false);	
 
-$("infopage").on("swiperight",function(){
-    alert("You swiped right!");
-  }); 
+ $( document ).on( "swiperight", "#infopage", function() {
+            $.mobile.changePage( "#pageone", { transition: "slide" , reverse: true});});
 
 //  map draw in initialize  
 document.getElementById("map").style.width=window.innerWidth+"px";  //      reduce width to screen  
@@ -395,7 +394,7 @@ updatetime()
             data-highlight="true" data-mini="true">
         </div>
 		</div>
-		
+	<div data-role="footer" data-position="fixed" >	
         <div data-role="navbar"> 
 		<ul>
 		<li><a href="#" id="here" data-role="button" data-inline="true" >Here</a></li>
@@ -404,6 +403,7 @@ updatetime()
 		<li><a href="#infopage" id="now" data-role="button" data-inline="true" data-transition="slide">Info</a></li>
 		</ul>
 		</div>
+	</div>	
 </div>		
 <div data-role="page" id="infopage">
 <div data-role="content" data-theme="b">
@@ -412,7 +412,7 @@ The numbers on the map show approximate bar closing times. <br>Click on one for 
 You can use the sliders to show bars still open at a given time and day.<br><br>
 Buttons:<br>
 Here sets the location to where you are<br>
-Soho sets the location to around Soho<br>
+There sets the location to the West End<br>
 Now sets the time and day to now<br><br>
 
 Data accuracy:<br>
