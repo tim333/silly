@@ -78,6 +78,7 @@ function getbarsinview() {
 	
 	var b = map.getBounds();
 	la1=b.fa.b; la2=b.fa.d; lo1=b.ka.b; lo2=b.ka.d
+	if (window.innerWidth>window.innerHeight) lo2=lo2+(lo2-lo1)
 	visbars = []
 	
     for (i = 0; i < a.length; i++) {
