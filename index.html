@@ -356,7 +356,7 @@ window.addEventListener("orientationchange", function() {
  $( document ).on( "swiperight", "#infopage", function() {
             $.mobile.changePage( "#pageone", { transition: "slide" , reverse: true});});
 
-$( document ).on( "swipeleft", "#pageone", function() {
+$( document ).on( "swipeleft", "#sliders", function() {
             $.mobile.changePage( "#infopage", { transition: "slide" , reverse: false});});			
 
 //  map draw in initialize  
@@ -379,7 +379,7 @@ updatetime()
 <!--Home from slider thing-->
 <div data-role="page" id="pageone">
 	<div id="map" style="width:800px;height:400px;"></div>
-	<div data-role="content" data-theme="a">
+	<div data-role="content" id="sliders" data-theme="a">
 	
       
         <div  >
@@ -396,7 +396,7 @@ updatetime()
             <input id="slider2" type="range" name="slider" value="5" min="1" max="7" class="ui-hidden-accessible"
             data-highlight="true" data-mini="true">
         </div>
-		</div>
+	</div>
 	<div data-role="footer" data-position="fixed" >	
         <div data-role="navbar"> 
 		<ul>
