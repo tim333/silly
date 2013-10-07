@@ -160,6 +160,7 @@ function updatemarkers() {    // for changing the day of the week
 }
 
 function getgeo(){
+	alert("geo");
   if (navigator.geolocation)
     {
     navigator.geolocation.getCurrentPosition(showPosition);
@@ -170,13 +171,17 @@ function getgeo(){
 	
   function showPosition(position)
   {
+  
   lat = position.coords.latitude  
   lng = position.coords.longitude;	
+  alert("latchange to "+lat);
   }
 }
-function drawmap2(){
-var MY_MAPTYPE_ID = 'custom_style';
 
+
+function drawmap2(){
+
+var MY_MAPTYPE_ID = 'custom_style';
 var featureOpts = [
     {
     featureType: "all",
@@ -195,8 +200,6 @@ var featureOpts = [
     }
   ];
 
- getgeo();
- 
     map = new google.maps.Map(document.getElementById('map'), {
       zoom: 16,
       center: new google.maps.LatLng(lat, lng),
@@ -205,20 +208,21 @@ var featureOpts = [
     mapTypeControlOptions: {
       mapTypeIds: [google.maps.MapTypeId.ROADMAP, MY_MAPTYPE_ID]
     },
-	zoomControlOptions: {
-        
+	disableDefaultUI: true, // remove controls
+	
+	/* zoomControlOptions: {        
         position: google.maps.ControlPosition.TOP_RIGHT
-    },
+    }, */
     mapTypeId: MY_MAPTYPE_ID});
 	
-GeoMarker = new GeolocationMarker(map);  /// the blue blob + more code below
-//GeoMarker.setCircleOptions({fillColor: '#808080'});
+//GeoMarker = new GeolocationMarker(map);  /// the blue blob + more code below
+/*GeoMarker.setCircleOptions({fillColor: '#808080'});
  google.maps.event.addListenerOnce(GeoMarker, 'position_changed', function() {
           map.setCenter(this.getPosition());
           // map.fitBounds(this.getBounds());
-        });
+        }); */
 
-GeoMarker.setMap(map);
+//GeoMarker.setMap(map);
 	//tube  */
 	
 var styledMapOptions = {
@@ -229,12 +233,10 @@ var styledMapOptions = {
 
   map.mapTypes.set(MY_MAPTYPE_ID, customMapType);
   
-// GeoMarker = new GeolocationMarker(map);  /// the blue blob
 }
 
-	
+/*	
 function drawmap(){
-
 getgeo();
  
     map = new google.maps.Map(document.getElementById('map'), {
@@ -259,7 +261,7 @@ getgeo();
 	//tube
 	//var transitLayer = new google.maps.TransitLayer();
 	//transitLayer.setMap(map);
-}
+} */
 
 function updatetime(){
 	var e = new Date(); var s=''
@@ -325,23 +327,30 @@ $('#now').click(function(){
 	getgeo()
 	var pos = new google.maps.LatLng(lat, lng)
 	map.panTo(pos)
+	getbarsinview()
 		})
  $('#eros').click(function(){ 
-	getgeo()
-	var pos = new google.maps.LatLng(51.515179,-0.132272)
+	lat=51.515179, lng=-0.132272
+	var pos = new google.maps.LatLng(lat, lng)
 	map.panTo(pos)
+	getbarsinview()
 		})
 // Listen for orientation changes
 window.addEventListener("orientationchange", function() {
   document.getElementById("map").style.width=window.innerWidth+"px"; 
+  drawmap2();
+  getbarsinview()
+  //alert("lat is "+lat);
 }, false);	
 
 //  map draw in initialize  
+document.getElementById("map").style.width=window.innerWidth+"px";  //      reduce width to screen  
+getgeo();
 drawmap2();
 infowindow = new google.maps.InfoWindow();
 google.maps.event.addListener(map, 'idle', getbarsinview);
 updatetime()
-document.getElementById("map").style.width=window.innerWidth+"px";  //      reduce width to screen                    
+                 
 
 }	  
 
@@ -373,7 +382,7 @@ document.getElementById("map").style.width=window.innerWidth+"px";  //      redu
         </div>
         <!--<input id="cl" type="submit" value="Here"><input id="b2" type="submit" value="Now">-->
 		<a href="#" id="here" data-role="button" data-inline="true">Here</a>
-		<a href="#" id="eros" data-role="button" data-inline="true">Soho</a>
+		<a href="#" id="eros" data-role="button" data-inline="true">There</a>
 		<a href="#" id="now" data-role="button" data-inline="true" >Now</a>
 </div>
 
