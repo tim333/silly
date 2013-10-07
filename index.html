@@ -325,7 +325,7 @@ $('#now').click(function(){
 	getgeo()
 	var pos = new google.maps.LatLng(lat, lng)
 	map.panTo(pos)
-	})
+		})
 	
 
 //  map draw in initialize  
@@ -333,6 +333,8 @@ drawmap2();
 infowindow = new google.maps.InfoWindow();
 google.maps.event.addListener(map, 'idle', getbarsinview);
 updatetime()
+document.getElementById("map").style.width=window.innerWidth+"px";  //      reduce width to screen                    
+
 }	  
 
 // end of initialize 
@@ -343,7 +345,7 @@ updatetime()
 
 <!--Home from slider thing-->
 
-<div id="map" style="width:500px;height:400px;"></div>
+<div id="map" style="width:600px;height:400px;"></div>
 <div data-role="content" data-theme="a">
 	
       
