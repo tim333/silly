@@ -66,25 +66,32 @@ function timeicon(t) {
 	icon = 'glasses/triangle'+icon+'.png'
 	return  icon
 	}
+function between(a,b,c) {
+		if (c>a) return (b>a && b<c)
+		return (b>c && b<a)}
+//alert(between(3,2,1));	
+//alert(between(1,5,3));		
  
 
 function getbarsinview() {
 	// finds the bars that are visable and sorts them by closing time && (visbars.length<maxbars )
 	
 	var b = map.getBounds();
+	la1=b.fa.b; la2=b.fa.d; lo1=b.ka.b; lo2=b.ka.d
 	visbars = []
 	
     for (i = 0; i < a.length; i++) {
 		// alert ('dude');
 		p=a[i][2][0]; q=a[i][2][1] 
-		
-		if (((p>b.fa.b) && (p<b.fa.d)) && (q<(b.ka.d) && (q>(b.ka.b)))  )  {
+		//if (between(b.fa.b, p, b.fa.d)  &&  between(b.ka.b, q, b.ka.d)) {
+		if (between(la1, p, la2)  &&  between(lo1, q, lo2)) {
 			visbars.push([i,a[i][0][day]]); }
 		else { if (showing[i]) removebar(i); }  // remove if not in view
 	}; 
 	// alert(JSON.stringify(visbars));
 	
 	visbars.sort(function(a,b) { return b[1] - a[1] } );
+	// alert(visbars.length);
 	adjustbars();
 	
 }
@@ -160,7 +167,7 @@ function updatemarkers() {    // for changing the day of the week
 }
 
 function getgeo(){
-	alert("geo");
+	
   if (navigator.geolocation)
     {
     navigator.geolocation.getCurrentPosition(showPosition);
@@ -173,8 +180,8 @@ function getgeo(){
   {
   
   lat = position.coords.latitude  
-  lng = position.coords.longitude;	
-  alert("latchange to "+lat);
+  lng = position.coords.longitude
+  
   }
 }
 
@@ -215,14 +222,14 @@ var featureOpts = [
     }, */
     mapTypeId: MY_MAPTYPE_ID});
 	
-//GeoMarker = new GeolocationMarker(map);  /// the blue blob + more code below
+GeoMarker = new GeolocationMarker(map);  /// the blue blob + more code below
 /*GeoMarker.setCircleOptions({fillColor: '#808080'});
  google.maps.event.addListenerOnce(GeoMarker, 'position_changed', function() {
           map.setCenter(this.getPosition());
           // map.fitBounds(this.getBounds());
         }); */
 
-//GeoMarker.setMap(map);
+GeoMarker.setMap(map);
 	//tube  */
 	
 var styledMapOptions = {
@@ -285,8 +292,8 @@ function updatetime(){
 }
 
 
-function initialize()
-{
+function initialize() {
+
 
 $( "#slider1").on('change',function( event ) {
 	if (busy==1) {alert('busy')}
@@ -329,17 +336,18 @@ $('#now').click(function(){
 	map.panTo(pos)
 	getbarsinview()
 		})
+		
  $('#eros').click(function(){ 
 	lat=51.515179, lng=-0.132272
 	var pos = new google.maps.LatLng(lat, lng)
 	map.panTo(pos)
 	getbarsinview()
 		})
-// Listen for orientation changes
+/* Listen for orientation changes */
 window.addEventListener("orientationchange", function() {
   document.getElementById("map").style.width=window.innerWidth+"px"; 
-  drawmap2();
-  getbarsinview()
+  //drawmap2();
+  //getbarsinview()
   //alert("lat is "+lat);
 }, false);	
 
@@ -408,7 +416,8 @@ days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
 busy = 0
 init=1  // to stop the silly bar change detector problem
 
-google.maps.event.addDomListener(window, 'load', initialize);
+google.maps.event.addDomListenerOnce(window, 'load', initialize);
+//$(document).ready(initialize);
 
 
 
