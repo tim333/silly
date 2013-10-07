@@ -356,6 +356,9 @@ window.addEventListener("orientationchange", function() {
  $( document ).on( "swiperight", "#infopage", function() {
             $.mobile.changePage( "#pageone", { transition: "slide" , reverse: true});});
 
+$( document ).on( "swipeleft", "#pageone", function() {
+            $.mobile.changePage( "#infopage", { transition: "slide" , reverse: false});});			
+
 //  map draw in initialize  
 document.getElementById("map").style.width=window.innerWidth+"px";  //      reduce width to screen  
 getgeo();
