@@ -354,6 +354,10 @@ window.addEventListener("orientationchange", function() {
 }, false);	
 
 //$(#sliders).textinput('disable');
+var hideKeyboard = function() {
+    document.activeElement.blur();
+    $("#sliders").blur();
+};
 
  $( document ).on( "swiperight", "#infopage", function() {
             $.mobile.changePage( "#pageone", { transition: "slide" , reverse: true});});
