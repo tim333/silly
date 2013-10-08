@@ -35,7 +35,7 @@ function  prettyd(d) {
 		} else {
 		s = mys(dh) + ':' + mys(dm) 
 		}
-	if (d<2400) {s=s+' pm'} else {s=s+' am'}	
+	if (d<2400 && d>1200){s=s+' pm'} else {s=s+' am'}	
 		return s 
 }
  
@@ -272,9 +272,9 @@ getgeo();
 } */
 
 function updatetime(){
-	var e = new Date(); var s=''
+	var e = new Date(); var s=''; 
 	time = e.getHours()*100 + e.getMinutes()	
-	if (time<1200) {time=time+2400}
+	if (time<800) {time=time+2400}
 	ts=prettyd(time)
 	day = e.getDay()
 	
@@ -353,6 +353,8 @@ window.addEventListener("orientationchange", function() {
   //alert("lat is "+lat);
 }, false);	
 
+//$(#sliders).textinput('disable');
+
  $( document ).on( "swiperight", "#infopage", function() {
             $.mobile.changePage( "#pageone", { transition: "slide" , reverse: true});});
 
@@ -379,7 +381,7 @@ updatetime()
 <!--Home from slider thing-->
 <div data-role="page" id="pageone">
 	<div id="map" style="width:800px;height:400px;"></div>
-	<div data-role="content" id="sliders" data-theme="a">
+	<div data-role="content" id="sliders" data-theme="a" readonly="true">
 	
       
         <div  >
