@@ -353,20 +353,28 @@ window.addEventListener("orientationchange", function() {
   //alert("lat is "+lat);
 }, false);	
 
-//$(#sliders).textinput('disable');
+/* /$(#sliders).textinput('disable');
 var hideKeyboard = function() {
     document.activeElement.blur();
     $("#sliders").blur();
-};
+}; */
+$(document).on('blur', 'input, textarea', function() {
+    setTimeout(function() {
+        window.scrollTo(document.body.scrollLeft, document.body.scrollTop);
+    }, 0);
+});
 
  $( document ).on( "swiperight", "#infopage", function() {
             $.mobile.changePage( "#pageone", { transition: "slide" , reverse: true});});
 
-$( document ).on( "swipeleft", "#sliders", function() {
-            $.mobile.changePage( "#infopage", { transition: "slide" , reverse: false});});			
+/* $( document ).on( "swipeleft", "#sliders", function() {
+            $.mobile.changePage( "#infopage", { transition: "slide" , reverse: false});});  */	
 
 //  map draw in initialize  
-document.getElementById("map").style.width=window.innerWidth+"px";  //      reduce width to screen  
+document.getElementById("map").style.width=window.innerWidth+"px";  //      reduce width to screen 
+ih=window.innerHeight -110  // control space
+if (ih>500) ih = ih-80		// more space for big devices
+document.getElementById("map").style.height=(ih)+"px"
 getgeo();
 drawmap2();
 infowindow = new google.maps.InfoWindow();
@@ -376,7 +384,7 @@ updatetime()
 
 }	  
 
-// end of initialize 
+// end of initialize style="width:800px;height:400px;"
 </script>
 
 
@@ -384,8 +392,8 @@ updatetime()
 
 <!--Home from slider thing-->
 <div data-role="page" id="pageone">
-	<div id="map" style="width:800px;height:400px;"></div>
-	<div data-role="content" id="sliders" data-theme="a" readonly="true">
+	<div id="map" ></div>
+	<div data-role="content" id="sliders" data-theme="a" readonly="readonly">
 	
       
         <div  >
@@ -451,7 +459,7 @@ showing = []  // for each bar whether it's showing or not
 var map, ts
 var infowindow
 
-maxbars = 200
+maxbars = 100
 lat = 51.513724; lng = -0.139392 // pcs
 onen= 111.2 
 onew= 69.98  // dist in km
