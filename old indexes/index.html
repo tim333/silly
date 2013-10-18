@@ -19,12 +19,6 @@
   <script src="phonegap.js"></script> 
   <script type="text/javascript" src="data.js"></script>
   <script src="js/googleblob.js"></script> 
-  <style>
-  .ui-page { 
-background:#FFFFFF;
-}
-  
-  </style>
     
 
 
@@ -82,19 +76,14 @@ function between(a,b,c) {
 
 function getbarsinview() {
 	// finds the bars that are visable and sorts them by closing time && (visbars.length<maxbars )
-	//alert ("yo vo")
+	
 	var b = map.getBounds();
-	// alert(JSON.stringify(b))
-	la1 = b.getNorthEast().lat(); la2= b.getSouthWest().lat()
-	lo1 = b.getNorthEast().lng(); lo2= b.getSouthWest().lng()
-	//la1=b.ea.b; la2=b.ea.d; lo1=b.ia.b; lo2=b.ia.d
-	//la1=b.fa.b; la2=b.fa.d; lo1=b.ka.b; lo2=b.ka.d
-	//if (window.innerWidth>window.innerHeight) lo2=lo2+(lo2-lo1)
+	la1=b.fa.b; la2=b.fa.d; lo1=b.ka.b; lo2=b.ka.d
+	if (window.innerWidth>window.innerHeight) lo2=lo2+(lo2-lo1)
 	visbars = []
 	
-	
     for (i = 0; i < a.length; i++) {
-		//alert ('dude');
+		// alert ('dude');
 		p=a[i][2][0]; q=a[i][2][1] 
 		//if (between(b.fa.b, p, b.fa.d)  &&  between(b.ka.b, q, b.ka.d)) {
 		if (between(la1, p, la2)  &&  between(lo1, q, lo2)) {
@@ -140,8 +129,7 @@ function addbar(i) {
 		// add listener	
 		handles[i] =google.maps.event.addListener(marker, 'click', (function(marker, i) {
 			return function() {
-				var a1=encodeURI(a[i][6])
-				var s= "<a href='#' onclick=\"window.open('"+a1 + "','_blank'); return false;\">"+a[i][1][0]  +'</a> <br>';						
+				var s= "<a href='#' onclick=\"window.open('"+a[i][6] + "','_blank'); return false;\">"+a[i][1][0]  +'</a> <br>';						
 				for (var j=0;j<7;j++)
 					{ s = s+ days[j]+' :  '+ prettyd(a[i][0][j])+"<br>  " }
 					s=s+"<a href='tel:"+a[i][5]+"'>"+a[i][5]+"</a>"
@@ -151,27 +139,22 @@ function addbar(i) {
 					}
 								})(marker, i));
 	}
-
-function disptext(){
-	if (ds!='' && ds.length<10 && time>2100 ) ds = ds +" night"
-	document.getElementById("time").innerHTML= ts+' '+ds+' '+ms
- }
+	
 
 function adjustbars(){
-	//refresh()
 	var c=0
 	var d=0
 	for (j=0; j<visbars.length; j++) {
 		i = visbars[j][0]
-		 
+		// if ((time > a[i][0][day]) || (a[i][0][day]==0)) {markers[i].setMap(null)}
 		if (!(time > a[i][0][day]) || (a[i][0][day]==0)) d+=1
 		if ((time > a[i][0][day]) || (a[i][0][day]==0) || c>maxbars ) 
 				{if (showing[i]) removebar(i);} 
 		else{ if (!showing[i]) { addbar(i)}; c +=1 }
 	}	
-	if (c>maxbars) {ms="(showing "+maxbars+' of '+d+')' ;ds=''}
-	else {ms='';  ds=longdays[day]+" ";};
-	disptext()
+	if (c>maxbars) document.getElementById("time").innerHTML=ts+" (showing "+maxbars+' of '+d+')' ;
+	else document.getElementById("time").innerHTML= prettyd(time);
+	
 }
 
 function updatemarkers() {    // for changing the day of the week
@@ -227,7 +210,7 @@ var featureOpts = [
   ];
 
     map = new google.maps.Map(document.getElementById('map'), {
-      zoom: zoom,
+      zoom: 16,
       center: new google.maps.LatLng(lat, lng),
       mapTypeId: google.maps.MapTypeId.ROADMAP,
 
@@ -261,6 +244,33 @@ var styledMapOptions = {
   
 }
 
+/*	
+function drawmap(){
+getgeo();
+ 
+    map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 16,
+      center: new google.maps.LatLng(lat, lng),
+      mapTypeId: google.maps.MapTypeId.ROADMAP
+    });	
+	GeoMarker = new GeolocationMarker(map);  /// the blue blob + more code below
+	
+	GeoMarker.setCircleOptions({fillColor: '#808080'});
+
+        google.maps.event.addListenerOnce(GeoMarker, 'position_changed', function() {
+          map.setCenter(this.getPosition());
+          
+        });
+
+        google.maps.event.addListener(GeoMarker, 'geolocation_error', function(e) {
+          alert('There was an error obtaining your position. Message: ' + e.message);
+        });
+
+        GeoMarker.setMap(map);
+	//tube
+	//var transitLayer = new google.maps.TransitLayer();
+	//transitLayer.setMap(map);
+} */
 
 function updatetime(){
 	var e = new Date(); var s=''; 
@@ -268,27 +278,26 @@ function updatetime(){
 	if (time<800) {time=time+2400}
 	ts=prettyd(time)
 	day = e.getDay()
-
-	if( e.getHours()<8) {day=day-1}
 	
+	if( e.getHours()<8) {day=day-1;s=" night"}
+	if( e.getHours()>21) s=" night";
 	if (day<0) day = 6;
 	slideday = day
 	if (day==0) slideday=7  
 	
 	$("#slider1").val((time-2400)/100).slider ("refresh")
 	$("#slider2").val(slideday).slider ("refresh")
-
-	ds= longdays[day]+s;
 	
+	document.getElementById("time").innerHTML= ts;
+	document.getElementById("day").innerHTML= days[day]+s;
 
 }
 
 function resize(){ 
 iw=window.innerWidth
-ih=window.innerHeight
 document.getElementById("map").style.width=iw+"px"; 
 if (ih>iw){
-ih=ih -110  // control space
+ih=window.innerHeight -110  // control space
 if (ih>500) ih = ih-80	}	// more space for big devices
 else ih -= 50
 document.getElementById("map").style.height=(ih)+"px" 
@@ -296,34 +305,6 @@ document.getElementById("map").style.height=(ih)+"px"
 google.maps.event.trigger(map, 'resize');
 
 }
-function here() { 
-	getgeo()
-	var pos = new google.maps.LatLng(lat, lng)
-	map.panTo(pos)
-	getbarsinview()
-		}
-
-function refresh() { 
-	var n=new Date()
-	now =n.getTime()	
-	
-	if ((now-lasttime) > (1000*60*5) ) {  // refresh is no action for 5 mins
-		lasttime=now
-		zoom=map.getZoom()
-		position =map.getCenter() 
-		lat = position.lat()  
-		lng = position.lng()
-		alert ((now-lasttime)+' '+lat+' '+zoom)
-		for (j=0; j<showing.length; j++) { 
-						if (showing[j]) removebar(j);
-						showing[j]=0
-		}
-		drawmap2()
-		getbarsinview()
-		google.maps.event.addListener(map, 'idle', getbarsinview);
-	}
-	lasttime=now  
-}		
 
 
 function initialize() {
@@ -331,7 +312,6 @@ function initialize() {
 //alert("init!!")
 
 $( "#slider1").on('change',function( event ) {
-	
 	if (busy==1) {alert('busy')}
 	else {
 	if (init) init=0
@@ -342,8 +322,7 @@ $( "#slider1").on('change',function( event ) {
 		var h = Math.floor(t) ; var m = t-h ; time=h*100+m*60
 		if (time<900) {time=time+2400}
 		ts=prettyd(time)
-		ds= longdays[day] 
-		disptext();
+		document.getElementById("time").innerHTML=ts;
 		adjustbars();
 		busy=0;
 	}}
@@ -355,25 +334,27 @@ $( "#slider2").on('change',function( event ) {
 	day = $("#slider2").val()  // tried to make the day correct 6 oct
 	
 	if (day>6) {day=0}
-	ds= longdays[day] 
-	disptext();
+	document.getElementById("day").innerHTML= days[day]+" night";
 	adjustbars()
 	updatemarkers()
 	
 });
 
-$('#now').click(function(){
-	//refresh()
+$('#now').click(function(){ 
 	init=1
 	updatetime()
 	
 	})
-
 	
- $('#here').click(here)
+ $('#here').click(function(){ 
+	getgeo()
+	var pos = new google.maps.LatLng(lat, lng)
+	map.panTo(pos)
+	getbarsinview()
+		})
 		
  $('#eros').click(function(){ 
-	lat=51.512108; lng=-0.131753  
+	lat=51.515179, lng=-0.132272
 	var pos = new google.maps.LatLng(lat, lng)
 	map.panTo(pos)
 	getbarsinview()
@@ -383,8 +364,19 @@ window.addEventListener("orientationchange", function() {
   resize()
 }, false);	
 
-
-//function geolocationSuccess(position) {alert('geo')}  tried but didnt go off
+/*
+$('#sliders').click(function(){$(this).val(newinput);});
+ /$(#sliders).textinput('disable');
+var hideKeyboard = function() {
+    document.activeElement.blur();
+    $("#sliders").blur();
+}; 
+$(document).on('blur', 'input, textarea', function() {
+    setTimeout(function() {
+        window.scrollTo(document.body.scrollLeft, document.body.scrollTop);
+    }, 0);
+});
+*/
 
  $( document ).on( "swiperight", "#infopage", function() {
             $.mobile.changePage( "#pageone", { transition: "slide" , reverse: true});});
@@ -393,8 +385,7 @@ window.addEventListener("orientationchange", function() {
             $.mobile.changePage( "#infopage", { transition: "slide" , reverse: false});});  */	
 
 //  map draw in initialize  
-iw=window.innerWidth
-document.getElementById("map").style.width=iw+"px";  //      reduce width to screen 
+document.getElementById("map").style.width=window.innerWidth+"px";  //      reduce width to screen 
 ih=window.innerHeight -110  // control space
 if (ih>500) ih = ih-80		// more space for big devices
 document.getElementById("map").style.height=(ih)+"px"
@@ -402,14 +393,8 @@ getgeo();
 drawmap2();
 infowindow = new google.maps.InfoWindow();
 google.maps.event.addListener(map, 'idle', getbarsinview);
-
 updatetime()
-$( "#popup" ).popup();
-$( "#popup" ).popup( "open" )
-
-setTimeout(here, 1000)
-
-           
+                 
 
 }	  
 
@@ -444,49 +429,35 @@ setTimeout(here, 1000)
         <div data-role="navbar"> 
 		<ul>
 		<li><a href="#" id="here" data-role="button" data-inline="true" >Here</a></li>
+		<li><a href="#" id="eros" data-role="button" data-inline="true">There</a></li>
 		<li><a href="#" id="now" data-role="button" data-inline="true" >Now</a></li>
-		<li><a href="#" id="eros" data-role="button" data-inline="true">Soho</a></li>
 		<li><a href="#infopage" id="now" data-role="button" data-inline="true" data-transition="slide">Info</a></li>
 		</ul>
 		</div>
 	</div>	
 </div>		
-<div data-role="page" id="infopage"  >
-	<div >
-	<img src="info1.png" alt="Welcome" >  <img src="info2.png" alt="Welcome!" ><br>
-	<div data-role="content">
-		The idea of this app is to show bars in London open after normal pub closing.<br>
-		The numbers on the map show approximate bar closing times. If you tap, details should pop up. 
-		<br>The links in the popups go to the bar's G+ pages with reviews and web links.<br>
-		The times in the popups are stored in the app and are available off-line. The G+ pages are not.<br><br>
-		You can use the sliders to show bars still open at a given time and day.<br><br>
-		Buttons:<br>
-		Here sets the location to where you are<br>
-		Soho sets the location to the West End<br>
-		Now sets the time and day to now and hides bars presently closed<br><br>
+<div data-role="page" id="infopage">
+<div data-role="content" data-theme="b">
+<h3>Welcome!</h3>
+The numbers on the map show approximate bar closing times. <br>Click on one for more info. <br>Click in the the top link for the G+ page.<br><br>
+You can use the sliders to show bars still open at a given time and day.<br><br>
+Buttons:<br>
+Here sets the location to where you are<br>
+There sets the location to the West End<br>
+Now sets the time and day to now<br><br>
 
-		Data:<br>
-		The main data is not 100% accurate and does not adjust for holidays. It was obtained by our software from various web sources.
-		For more you can try the G+ pages and from there the bar's own websites all of which may also be inaccurate but there you go. 
-		You can also call by clicking the phone numbers.<br><br>
-		Contact:<br>
-		What do you think? This is version 1, suggestions for version 2 welcome at
-		latebarsapp@gmail.com
-	</div>
-	</div>
+Data accuracy:<br>
+The main data is not 100% accurate and does not adjust for Christmas and the like.
+For more you can try the G+ pages and from there the bar's own websites. 
+You can also call by clicking the phone numbers.<br><br>
+Contact:<br>
+What do you think? This is version 1, suggestions for version 2 welcome at
+latebarsapp@gmail.com
+
+
+
 </div>
-
-<!-- Start of third page: #popup -->
-<div data-role="popup" id="popup" data-rel="back">
-
-	
-	<div data-role="content" data-theme="d" >	
-<a href="#" data-rel="back" >
-		<img src="welcometo.png" alt="Welcome" >
-	</a>
-	</div><!-- /content -->
-
-</div><!-- /page popup -->
+</div>
 
 <script>   // globals + initialize call
 
@@ -499,24 +470,20 @@ handles = []  // list of the listener functions so you can remover them
 mtimes = [] //  the times shown on the map markers
 
 showing = []  // for each bar whether it's showing or not
-var map, iw, ih
-lasttime= (new Date()).getTime()
-ms=''; ts=''; ds=''
+var map, ts
 var infowindow
 
-zoom=16
 maxbars = 100
 lat = 51.513724; lng = -0.139392 // pcs
 onen= 111.2 
 onew= 69.98  // dist in km
 days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat']
-longdays =['Sunday','Monday','Tuesday','Wednesday','Thurdsay','Friday','Saturday']
 busy = 0
 init=1  // to stop the silly bar change detector problem 
 
 //google.maps.event.addDomListenerOnce(window, 'load', initialize);
-$(document).ready( function() {setTimeout(initialize, 1000)});
-//$(document).on("pageinit","#pageone",initialize); 
+//$(document).ready(initialize);
+$(document).on("pageinit","#pageone",initialize); 
 //document.addEventListener("deviceready", initialize, false);
 
 
