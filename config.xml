@@ -19,7 +19,7 @@
 	
 	<plugin name="InAppBrowser" value="CDVInAppBrowser" />
 	
-	<preference name="stay-in-webview" value="false" />
+	
 	<preference name="orientation" value="portrait" />
 	
 	<access origin="http://googleapis.com" subdomains="true" />
