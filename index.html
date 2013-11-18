@@ -20,6 +20,7 @@
   
   <script type="text/javascript" src="data.js"></script>
   <script src="js/googleblob.js"></script> 
+  <script async src="LightningTouch.js"></script>
 
 
 
@@ -370,14 +371,15 @@ $( "#slider2").on('change',function( event ) {
 });
 
 $('#now').click(function(){
-	//refresh()
+	refresh()
 	init=1
 	updatetime()
 	
 	})
 
-	
- $('#here').click(here)
+	// $('#here').on('vclick', here);
+$('#here').bind('vclick', here);
+ //$('#here').click(here)    
 		
  $('#eros').click(function(){ 
 	lat=51.512108; lng=-0.131753  
@@ -447,13 +449,13 @@ setTimeout(here, 1000)
             data-highlight="true" data-mini="true" readonly="true">
         </div>
 	</div>
-	<div data-role="footer" data-position="fixed" >	
+	<div data-role="header" data-position="fixed" >	
         <div data-role="navbar"> 
 		<ul>
 		<li><a href="#" id="here" data-role="button" data-inline="true" >Here</a></li>
 		<li><a href="#" id="now" data-role="button" data-inline="true" >Now</a></li>
 		<li><a href="#" id="eros" data-role="button" data-inline="true">Soho</a></li>
-		<li><a href="#infopage" id="now" data-role="button" data-inline="true" data-transition="slide">Info</a></li>
+		<li><a href="#infopage" id="info" data-target-id="infopage" data-role="button" data-inline="true" data-transition="slide">Info</a></li>
 		</ul>
 		</div>
 	</div>	

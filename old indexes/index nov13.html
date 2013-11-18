@@ -8,17 +8,22 @@
   <title>Bar App</title>
   
   <!-- external -->
+  <script  src="http://localhost/appgyver/cordova.js"></script>
   <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBb8HDIM893Gt2imnvPCcQfilmBtEL2hOs&sensor=true"></script> 
   <!-- <script src="https://google-maps-utility-library-v3.googlecode.com/svn/trunk/geolocationmarker/src/geolocationmarker-compiled.js"></script> 
-  internal replacements ---->
-  <script  src="http://localhost/appgyver/cordova.js"></script> 
+  internal replacements       <script src="phonegap.js"></script> ---->
+  
   <link rel="stylesheet" href="js/jquery.mobile-1.3.2.css">
    <link rel="stylesheet" href="themes/theme1.css" > 
   <script src="js/jquery-1.9.1.min.js"></script> 
   <script src="js/jquery.mobile-1.3.2.min.js"></script>   
-  <script src="phonegap.js"></script> 
+  
   <script type="text/javascript" src="data.js"></script>
   <script src="js/googleblob.js"></script> 
+
+
+
+  
   <style>
   .ui-page { 
 background:#FFFFFF;
@@ -81,7 +86,7 @@ function between(a,b,c) {
  
 
 function getbarsinview() {
-	// finds the bars that are visable and sorts them by closing time && (visbars.length<maxbars)
+	// finds the bars that are visable and sorts them by closing time && (visbars.length<maxbars )
 	//alert ("yo vo")
 	var b = map.getBounds();
 	// alert(JSON.stringify(b))
@@ -241,7 +246,12 @@ var featureOpts = [
     }, */
     mapTypeId: MY_MAPTYPE_ID});
 	
-GeoMarker = new GeolocationMarker(map);  
+GeoMarker = new GeolocationMarker(map);  /// the blue blob + more code below
+/*GeoMarker.setCircleOptions({fillColor: '#808080'});
+ google.maps.event.addListenerOnce(GeoMarker, 'position_changed', function() {
+          map.setCenter(this.getPosition());
+          // map.fitBounds(this.getBounds());
+        }); */
 
 GeoMarker.setMap(map);
 	//tube  */
@@ -295,7 +305,9 @@ function here() {
 	getgeo()
 	var pos = new google.maps.LatLng(lat, lng)
 	map.panTo(pos)
-	getbarsinview()
+	lasttime=0
+	refresh()
+	//getbarsinview()
 		}
 
 function refresh() { 
@@ -308,7 +320,7 @@ function refresh() {
 		position =map.getCenter() 
 		lat = position.lat()  
 		lng = position.lng()
-		alert ((now-lasttime)+' '+lat+' '+zoom)
+		// alert ((now-lasttime)+' '+lat+' '+zoom)
 		for (j=0; j<showing.length; j++) { 
 						if (showing[j]) removebar(j);
 						showing[j]=0
@@ -410,7 +422,7 @@ setTimeout(here, 1000)
 
 // end of initialize style="width:800px;height:400px;"
 </script>
-
+</head>
 
 <body>
 
