@@ -313,7 +313,9 @@ function here() {
 
 function refresh() { 
 	var n=new Date()
-	now =n.getTime()	
+	now =n.getTime()
+	//alert (showing.length)
+	//if (showing.length < 1) { initialize(); return } // trying to make it work if no signal at first
 	
 	if ((now-lasttime) > (1000*60*5) ) {  // refresh is no action for 5 mins
 		lasttime=now
@@ -336,7 +338,7 @@ function refresh() {
 
 function initialize() {
 
-//alert("init!!")
+alert("init!!"+navigator.onLine)
 
 $( "#slider1").on('change',function( event ) {
 	
