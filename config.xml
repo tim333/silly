@@ -27,6 +27,8 @@
     
 	<feature name="http://api.phonegap.com/1.0/geolocation"/>
 	
+	<gap:plugin name="org.apache.cordova.core.geolocation" />
+	
 	<plugin name="InAppBrowser" value="CDVInAppBrowser" />
 	
 	
