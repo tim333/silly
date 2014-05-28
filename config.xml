@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
     <widget xmlns = "http://www.w3.org/ns/widgets"
         xmlns:gap = "http://phonegap.com/ns/1.0"
-        id        = "com.timspear.latebars"
+        id        = "com.phonegap.example"
         version   = "1.0.0">
 
     <!-- versionCode removed for ios-->
@@ -15,7 +15,7 @@
 
     <name>Late Bars London</name>
 	
-	 <icon src="icon.png">
+	<icon src="icon.png">
 
 	<!-- iPhone / iPod Touch  -->
 		<icon src="icon-60.png" gap:platform="ios" width="60" height="60" />
