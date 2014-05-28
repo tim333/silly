@@ -7,12 +7,17 @@
 <script>
 
 if (!(navigator.onLine)) {
-	document.getElementById("map").innerHTML="<center><br><br><br><h3>I'm afraid this app needs an internet connection to start up</h3><h3>It should start when you get online</h3></center>"
+	document.getElementById("map").innerHTML="<center><br><br><br><br><br><h3>I'm afraid this app needs an internet connection to start up</h3><h3>It should start when you get online</h3></center>"
 	}
 	else window.location.replace("main.html");
+
 setInterval(function () {
    if (navigator.onLine) { 
-		window.location.replace("main.html");}
+   		document.getElementById("map").innerHTML="<center><br><br><br><br><br><h3>Trying in 3 seconds</h3></center>";
+   		setTimeout(function(){
+    		window.location.replace("main.html");
+		}, 3000);
+	}
 }, 250);
 
 </script>
