@@ -15,7 +15,7 @@
 
     <name>Late Bars London</name>
 	
-	<icon src="icon.png">
+	<icon src="icon.png" />
 
 	<!-- iPhone / iPod Touch  -->
 		<icon src="icon-60.png" gap:platform="ios" width="60" height="60" />
