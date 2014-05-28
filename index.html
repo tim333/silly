@@ -4,21 +4,15 @@
 
 <div id="map" ></div>
 
-
 <script>
-
-//alert(navigator.onLine);
 
 if (!(navigator.onLine)) {
 	document.getElementById("map").innerHTML="<center><br><br><br><h3>I'm afraid this app needs an internet connection to start up</h3><h3>It should start when you get online</h3></center>"
 	}
-	
-function redirect() {	window.location.replace("main.html")}
-	
+	else window.location.replace("main.html");
 setInterval(function () {
    if (navigator.onLine) { 
-		function() {setTimeout(redirect, 1000)}
-		;}
+		window.location.replace("main.html");}
 }, 250);
 
 </script>
