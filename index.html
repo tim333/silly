@@ -13,10 +13,10 @@ if (!(navigator.onLine)) {
 
 setInterval(function () {
    if (navigator.onLine) { 
-   		document.getElementById("map").innerHTML="<center><br><br><br><br><br><h3>Trying in 3 seconds</h3></center>";
+   		document.getElementById("map").innerHTML="<center><br><br><br><br><br><h3>Trying in 10 seconds</h3></center>";
    		setTimeout(function(){
     		window.location.replace("main.html");
-		}, 3000);
+		}, 10000);
 	}
 }, 250);
 
