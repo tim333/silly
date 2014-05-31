@@ -1,6 +1,5 @@
 
-<html manifest="example.appcache">
-
+<html>
 <head>  <!-- from jquery gen -->
   <meta charset="utf-8">
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
@@ -8,19 +7,19 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black"> 
   <title>Bar App</title>
   
-  <!-- external --
+  <!-- external -->
+  <script  src="http://localhost/appgyver/cordova.js"></script>
   <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBb8HDIM893Gt2imnvPCcQfilmBtEL2hOs&sensor=true"></script> 
   <!-- <script src="https://google-maps-utility-library-v3.googlecode.com/svn/trunk/geolocationmarker/src/geolocationmarker-compiled.js"></script> 
-  internal replacements      <script  src="http://localhost/appgyver/cordova.js"></script> ---->
-  <script src="phonegap.js"></script> 
+  internal replacements       <script src="phonegap.js"></script> ---->
+  
   <link rel="stylesheet" href="js/jquery.mobile-1.3.2.css">
-  <link rel="stylesheet" href="themes/theme1.css" > 
+   <link rel="stylesheet" href="themes/theme1.css" > 
   <script src="js/jquery-1.9.1.min.js"></script> 
   <script src="js/jquery.mobile-1.3.2.min.js"></script>   
   
   <script type="text/javascript" src="data.js"></script>
-  
- 
+  <script src="js/googleblob.js"></script> 
 
 
 
@@ -303,8 +302,6 @@ google.maps.event.trigger(map, 'resize');
 
 }
 function here() { 
-	//alert("here")
-
 	getgeo()
 	var pos = new google.maps.LatLng(lat, lng)
 	map.panTo(pos)
@@ -315,9 +312,7 @@ function here() {
 
 function refresh() { 
 	var n=new Date()
-	now =n.getTime()
-	//alert (showing.length)
-	//if (showing.length < 1) { initialize(); return } // trying to make it work if no signal at first
+	now =n.getTime()	
 	
 	if ((now-lasttime) > (1000*60*5) ) {  // refresh is no action for 5 mins
 		lasttime=now
@@ -340,7 +335,7 @@ function refresh() {
 
 function initialize() {
 
-alert("init wtf?")
+//alert("init!!")
 
 $( "#slider1").on('change',function( event ) {
 	
@@ -375,15 +370,14 @@ $( "#slider2").on('change',function( event ) {
 });
 
 $('#now').click(function(){
-	refresh()
+	//refresh()
 	init=1
 	updatetime()
 	
 	})
 
-	// $('#here').on('vclick', here);
-$('#here').bind('vclick', here);
- //$('#here').click(here)    
+	
+ $('#here').click(here)
 		
  $('#eros').click(function(){ 
 	lat=51.512108; lng=-0.131753  
@@ -459,7 +453,7 @@ setTimeout(here, 1000)
 		<li><a href="#" id="here" data-role="button" data-inline="true" >Here</a></li>
 		<li><a href="#" id="now" data-role="button" data-inline="true" >Now</a></li>
 		<li><a href="#" id="eros" data-role="button" data-inline="true">Soho</a></li>
-		<li><a href="#infopage" id="info" data-target-id="infopage" data-role="button" data-inline="true" data-transition="slide">Info</a></li>
+		<li><a href="#infopage" id="now" data-role="button" data-inline="true" data-transition="slide">Info</a></li>
 		</ul>
 		</div>
 	</div>	
@@ -501,11 +495,6 @@ setTimeout(here, 1000)
 
 </div><!-- /page popup -->
 
-
-
- <script src="js/googleapi.js"></script>
- <script src="js/googleblob.js"></script> 
-
 <script>   // globals + initialize call
 
 
@@ -532,7 +521,7 @@ longdays =['Sunday','Monday','Tuesday','Wednesday','Thurdsay','Friday','Saturday
 busy = 0
 init=1  // to stop the silly bar change detector problem 
 
-//google.maps.event.addDomListenerOnce(window, 'load', function() {setTimeout(initialize, 1000)});
+//google.maps.event.addDomListenerOnce(window, 'load', initialize);
 $(document).ready( function() {setTimeout(initialize, 1000)});
 //$(document).on("pageinit","#pageone",initialize); 
 //document.addEventListener("deviceready", initialize, false);

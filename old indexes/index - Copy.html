@@ -1,6 +1,5 @@
 
-<html manifest="example.appcache">
-
+<html>
 <head>  <!-- from jquery gen -->
   <meta charset="utf-8">
   <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
@@ -8,7 +7,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black"> 
   <title>Bar App</title>
   
-  <!-- external --
+  <!-- external -->
+  
   <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBb8HDIM893Gt2imnvPCcQfilmBtEL2hOs&sensor=true"></script> 
   <!-- <script src="https://google-maps-utility-library-v3.googlecode.com/svn/trunk/geolocationmarker/src/geolocationmarker-compiled.js"></script> 
   internal replacements      <script  src="http://localhost/appgyver/cordova.js"></script> ---->
@@ -19,7 +19,7 @@
   <script src="js/jquery.mobile-1.3.2.min.js"></script>   
   
   <script type="text/javascript" src="data.js"></script>
-  
+  <script src="js/googleblob.js"></script> 
  
 
 
@@ -303,8 +303,6 @@ google.maps.event.trigger(map, 'resize');
 
 }
 function here() { 
-	//alert("here")
-
 	getgeo()
 	var pos = new google.maps.LatLng(lat, lng)
 	map.panTo(pos)
@@ -340,7 +338,7 @@ function refresh() {
 
 function initialize() {
 
-alert("init wtf?")
+//alert("init!!"+navigator.onLine)
 
 $( "#slider1").on('change',function( event ) {
 	
@@ -501,11 +499,6 @@ setTimeout(here, 1000)
 
 </div><!-- /page popup -->
 
-
-
- <script src="js/googleapi.js"></script>
- <script src="js/googleblob.js"></script> 
-
 <script>   // globals + initialize call
 
 
@@ -532,7 +525,7 @@ longdays =['Sunday','Monday','Tuesday','Wednesday','Thurdsay','Friday','Saturday
 busy = 0
 init=1  // to stop the silly bar change detector problem 
 
-//google.maps.event.addDomListenerOnce(window, 'load', function() {setTimeout(initialize, 1000)});
+//google.maps.event.addDomListenerOnce(window, 'load', initialize);
 $(document).ready( function() {setTimeout(initialize, 1000)});
 //$(document).on("pageinit","#pageone",initialize); 
 //document.addEventListener("deviceready", initialize, false);
