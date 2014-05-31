@@ -32,7 +32,7 @@
         Showing where you can get a drink after 11.
     </description>
     
-    <author href="https://build.phonegap.com" email="latebarsapp@gmail.com">
+    <author href="http://www.timspear.com/latebars.php" email="latebarsapp@gmail.com">
         Tim Spear
     </author>
     
@@ -40,12 +40,12 @@
 	
 	<gap:plugin name="org.apache.cordova.core.geolocation" />
 	
-	<plugin name="InAppBrowser" value="CDVInAppBrowser" />
 	
+	<plugin name="InAppBrowser" value="CDVInAppBrowser" />
+  <preference name="stay-in-webview" value="false" />
 	
 	<preference name="orientation" value="portrait" />
 
-	<access origin="https://google.com" subdomains="true" />
 	<access origin="http://googleapis.com" subdomains="true" />
 	<access origin="https://google-maps-utility-library-v3.googlecode.com" subdomains="true" />
 	<access origin="http://gstatic.com" subdomains="true" />
